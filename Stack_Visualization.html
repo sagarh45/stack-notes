@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ﻿<!DOCTYPE html>
-=======
-<!DOCTYPE html>
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -320,9 +316,16 @@ footer{text-align:center; color:var(--muted); font-size:.9rem; padding:20px;}
 .code-editor .line{display:flex; gap:10px; padding:1px 6px; border-radius:4px; white-space:pre;}
 .code-editor .line .ln{flex:0 0 36px; text-align:right; color:#64748b; user-select:none; font-size:.8rem; padding-top:1px;}
 .code-editor .line .lc{flex:1; white-space:pre;}
-.code-editor .line.hot{background:#fef9c3; outline:1px solid #eab308;}
+.code-editor .line.hot{background:#fef9c3; outline:1px solid #eab308; scroll-margin-block:20px;}
 .code-editor .line.hot .ln{color:#a16207; font-weight:800;}
 .code-editor .line:hover{background:#f1f5f9;}
+.prog-code-pane .code-ide.code-editor,
+.code-modal-body .code-editor{
+  overflow-y:auto; overflow-x:auto;
+  overscroll-behavior:contain;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
 .trace-help{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0;}
 @media(max-width:700px){.trace-help{grid-template-columns:1fr;}}
 .trace-help div{background:#f8fafc; border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:.9rem;}
@@ -337,13 +340,12 @@ footer{text-align:center; color:var(--muted); font-size:.9rem; padding:20px;}
   .sticky-steps{bottom:4px; gap:8px; flex-wrap:wrap;}
   .sticky-steps .btn{padding:12px 14px; font-size:1rem; min-height:44px;}
   #projNextBtn, #progNext, #i2pNext, #evNext{flex:1 1 100% !important; min-width:100% !important;}
-<<<<<<< HEAD
   #projList, .case-grid, .case-grid-v2{flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px;}
   /* #progList handled in Programs mobile grid — do NOT force nowrap/100% scroll */
-=======
-  #progList, #projList, .case-grid, .case-grid-v2{flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px;}
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
-  .code-editor{font-size:.8rem; padding:10px; max-height:280px;}
+  .code-editor{font-size:.8rem; padding:10px;}
+  .prog-code-pane .code-editor.code-ide{
+    max-height:none !important; min-height:200px; overflow-y:auto !important;
+  }
   .console-box{font-size:.85rem;}
   header{padding:16px 12px;}
   input.wide, #projInput, #progInput{width:100% !important; max-width:100% !important; box-sizing:border-box;}
@@ -481,31 +483,34 @@ details.guide-fold .fold-body{padding:14px 16px 18px;}
 .master-card ul{margin-left:18px;}
 
 /* ---------- Program Lab — comfortable full layout ---------- */
-<<<<<<< HEAD
 .prog-lab-card{padding:0; overflow:visible; margin:0 -4px;}
-.prog-lab{display:grid; grid-template-columns:250px 1fr; min-height:calc(100vh - 130px);}
-.prog-sidebar{background:var(--code-bg); border-right:1px solid var(--line); padding:16px 12px; overflow-y:auto; max-height:calc(100vh - 100px); min-width:0;}
+.prog-lab{display:grid; grid-template-columns:minmax(220px,250px) minmax(0,1fr); min-height:calc(100vh - 130px); width:100%; min-width:0;}
+.prog-sidebar{
+  background:var(--code-bg); border-right:1px solid var(--line); padding:16px 12px;
+  overflow-x:hidden; overflow-y:auto; max-height:calc(100vh - 100px); min-width:0;
+  -webkit-overflow-scrolling:touch;
+}
 .prog-sidebar h2{font-size:1.05rem; margin:0 0 4px;}
 .prog-sidebar-hint{font-size:.78rem; color:var(--muted); margin:0 0 12px; line-height:1.4;}
+.prog-sidebar-count{font-size:.72rem; font-weight:800; color:var(--accent); margin:0 0 8px; display:none;}
+@media(max-width:600px){.prog-sidebar-count{display:block;}}
 .prog-mobile-pick{display:none; margin:0 0 10px;}
 .prog-mobile-pick label{display:block; font-size:.75rem; font-weight:800; color:var(--muted); margin-bottom:4px; text-transform:uppercase; letter-spacing:.4px;}
-.prog-mobile-pick select{width:100%; max-width:100%; border:2px solid var(--accent); border-radius:10px; padding:12px 12px; font-size:1rem; font-weight:700; background:#fff; color:var(--ink); min-height:48px;}
-.prog-sidebar .prog-list{display:flex; flex-direction:column; gap:4px; margin:0; width:100%;}
+.prog-mobile-pick select{
+  width:100%; max-width:100%; box-sizing:border-box;
+  border:2px solid var(--accent); border-radius:10px; padding:12px 12px;
+  font-size:1rem; font-weight:700; background:#fff; color:var(--ink); min-height:48px;
+}
+.prog-sidebar .prog-list{
+  display:flex; flex-direction:column; gap:4px; margin:0; width:100%; min-width:0;
+  overflow:visible; max-height:none;
+}
 .prog-sidebar .prog-list button{
-  width:100%; text-align:left; border:1px solid transparent; background:transparent;
+  width:100%; max-width:100%; box-sizing:border-box; text-align:left;
+  border:1px solid transparent; background:transparent;
   border-radius:8px; padding:8px 10px; font-size:.82rem; font-weight:600; cursor:pointer; color:var(--ink);
-  flex:initial; white-space:normal;}
-=======
-.prog-lab-card{padding:0; overflow:hidden; margin:0 -4px;}
-.prog-lab{display:grid; grid-template-columns:250px 1fr; min-height:calc(100vh - 130px);}
-.prog-sidebar{background:var(--code-bg); border-right:1px solid var(--line); padding:16px 12px; overflow-y:auto; max-height:calc(100vh - 100px);}
-.prog-sidebar h2{font-size:1.05rem; margin:0 0 4px;}
-.prog-sidebar-hint{font-size:.78rem; color:var(--muted); margin:0 0 12px; line-height:1.4;}
-.prog-sidebar .prog-list{display:flex; flex-direction:column; gap:4px; margin:0;}
-.prog-sidebar .prog-list button{
-  width:100%; text-align:left; border:1px solid transparent; background:transparent;
-  border-radius:8px; padding:8px 10px; font-size:.82rem; font-weight:600; cursor:pointer; color:var(--ink);}
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
+  flex:initial; white-space:normal; line-height:1.3; word-break:break-word;
+}
 .prog-sidebar .prog-list button:hover{background:var(--accent-soft); border-color:var(--line);}
 .prog-sidebar .prog-list button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
 .prog-main{display:flex; flex-direction:column; gap:12px; min-width:0; padding:16px 18px 18px; min-height:0;}
@@ -515,7 +520,7 @@ details.guide-fold .fold-body{padding:14px 16px 18px;}
 .prog-toolbar{
   display:flex; flex-wrap:wrap; gap:10px; align-items:center;
   padding:12px 14px; background:var(--accent-soft); border:1px solid var(--line);
-  border-radius:12px; position:sticky; top:52px; z-index:30;
+  border-radius:12px; position:relative; top:auto; z-index:1;
 }
 .prog-toolbar-group{display:flex; flex-wrap:wrap; align-items:center; gap:8px;}
 .prog-toolbar-group label{font-size:.78rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.4px;}
@@ -563,31 +568,42 @@ details.guide-fold .fold-body{padding:14px 16px 18px;}
 }
 .code-pane-head b{color:var(--ink);}
 .code-pane-head .code-pane-meta{font-size:.78rem; color:var(--muted);}
-.code-ide{flex:1; overflow:auto; max-height:none; min-height:260px; border-radius:0; border:none; margin:0; background:#fff;}
+.code-ide{
+  flex:1; overflow-y:auto; overflow-x:auto; max-height:none; min-height:260px;
+  border-radius:0; border:none; margin:0; background:#fff;
+  overscroll-behavior:contain; scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
 @media(max-width:900px){
-<<<<<<< HEAD
-  #tab-programs{padding-bottom:88px;}
-  .prog-lab-card{overflow:visible; margin:0;}
-  .prog-lab{grid-template-columns:1fr; min-height:auto; display:flex; flex-direction:column;}
+  #tab-programs{padding-bottom:calc(88px + env(safe-area-inset-bottom, 0px)); overflow:visible;}
+  #tab-programs .prog-lab-card{overflow:visible; margin:0; border-radius:12px;}
+  .prog-lab{
+    grid-template-columns:1fr; min-height:auto;
+    display:flex; flex-direction:column; width:100%; min-width:0;
+  }
   .prog-sidebar{
-    max-height:none; border-right:none; border-bottom:1px solid var(--line);
-    padding:12px 12px 14px; position:sticky; top:0; z-index:45;
-    background:var(--code-bg); box-shadow:0 4px 12px rgba(15,23,42,.06);
+    position:relative; top:auto; z-index:10;
+    max-height:none; height:auto;
+    overflow:visible; overflow-x:hidden; overflow-y:visible;
+    border-right:none; border-bottom:1px solid var(--line);
+    padding:12px 10px 14px;
+    background:var(--code-bg);
+    box-shadow:none; flex-shrink:0;
   }
   .prog-mobile-pick{display:block;}
-  /* Chip grid — all programs visible (no broken 100%-width horizontal scroll) */
   .prog-sidebar .prog-list{
     display:grid !important;
     grid-template-columns:repeat(2, minmax(0,1fr));
     gap:6px;
-    overflow:visible;
+    overflow:visible !important;
     flex-wrap:wrap;
-    max-height:none;
+    max-height:none !important;
     width:100%;
+    margin:0;
   }
   .prog-sidebar .prog-list button{
     width:100% !important;
-    max-width:100%;
+    max-width:100% !important;
     flex:unset !important;
     white-space:normal !important;
     font-size:.72rem;
@@ -597,47 +613,59 @@ details.guide-fold .fold-body{padding:14px 16px 18px;}
     background:#fff;
     line-height:1.25;
     text-align:left;
+    box-sizing:border-box;
   }
   .prog-sidebar .prog-list button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
-  .prog-main{padding:12px 12px 24px;}
-  .prog-workspace{grid-template-columns:1fr; grid-template-rows:auto auto auto;}
-  .prog-code-pane,.prog-status-pane{grid-column:1; max-height:none;}
-  .prog-viz-row{grid-column:1; grid-template-columns:1fr; min-height:220px;}
+  .prog-main{padding:12px 10px 24px; min-width:0; width:100%;}
+  .prog-workspace{
+    display:flex; flex-direction:column; gap:12px;
+    grid-template-columns:none; grid-template-rows:none;
+  }
+  .prog-code-pane{
+    grid-row:unset; grid-column:unset;
+    max-height:none; width:100%; position:relative; z-index:1;
+  }
+  .prog-status-pane{
+    grid-row:unset; grid-column:unset;
+    max-height:none; width:100%; flex:0 0 auto; position:relative; z-index:1;
+  }
+  .prog-status-pane .step-desc{flex:0 0 auto; max-height:none;}
+  .prog-status-pane .console-box{flex:0 0 auto; min-height:72px; max-height:28vh;}
+  .prog-viz-row{
+    grid-row:unset; grid-column:unset;
+    width:100%; min-height:220px;
+  }
+  .prog-code-pane{
+    max-height:min(48vh,400px); display:flex; flex-direction:column; min-height:0;
+  }
+  .prog-code-pane .code-ide{
+    flex:1; min-height:200px; max-height:none !important;
+    overflow-y:auto !important; overflow-x:auto !important;
+  }
   .prog-stack-well{max-width:180px;}
-  .code-ide{max-height:38vh; min-height:180px;}
-  .prog-toolbar{position:static;}
-  .prog-run-group,.prog-trace-group{border-left:none; padding-left:0;}
-  .prog-toolbar .btn{min-height:44px;}
+  .prog-toolbar{position:static; flex-direction:column; align-items:stretch;}
+  .prog-toolbar-group{width:100%;}
+  .prog-input-group input{max-width:100% !important;}
+  .prog-run-group,.prog-trace-group{border-left:none; padding-left:0; width:100%;}
+  .prog-toolbar .btn{min-height:44px; flex:1 1 auto;}
+  .prog-examples-row{font-size:.82rem; word-break:break-word;}
+  .prog-examples-row .btn{margin:2px 4px 2px 0;}
 }
-@media(max-width:520px){
+@media(max-width:600px){
   .prog-sidebar .prog-list{grid-template-columns:1fr !important;}
   .prog-sidebar-hint{display:none;}
-=======
-  .prog-lab{grid-template-columns:1fr; min-height:auto;}
-  .prog-sidebar{max-height:none; border-right:none; border-bottom:1px solid var(--line);}
-  .prog-sidebar .prog-list{flex-direction:row; flex-wrap:nowrap; overflow-x:auto;}
-  .prog-sidebar .prog-list button{flex:0 0 auto; white-space:nowrap;}
-  .prog-workspace{grid-template-columns:1fr; grid-template-rows:auto auto auto;}
-  .prog-code-pane,.prog-status-pane{grid-column:1;}
-  .prog-viz-row{grid-column:1; grid-template-columns:1fr;}
-  .prog-stack-well{max-width:180px;}
-  .code-ide{max-height:32vh;}
-  .prog-toolbar{position:static;}
-  .prog-run-group,.prog-trace-group{border-left:none; padding-left:0;}
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
+}
+@media(max-width:400px){
+  .prog-sidebar .prog-list button{font-size:.68rem; padding:9px 7px;}
 }
 html.dark .prog-sidebar{background:#0f172a;}
 html.dark .prog-sidebar .prog-list button:hover{background:#1e3a5f;}
 html.dark .prog-toolbar{background:#1e293b;}
-<<<<<<< HEAD
 html.dark .prog-mobile-pick select{background:#0f172a; color:var(--ink); border-color:var(--accent);}
 #tab-programs{padding-bottom:20px;}
 @media(max-width:900px){
   #progList{flex-wrap:wrap !important; overflow:visible !important;}
 }
-=======
-#tab-programs main{padding-bottom:20px;}
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
 .code-editor .line:hover{background:#f1f5f9;}
 html.dark .prog-viz-row{background:var(--card);}
 html.dark .code-editor{background:#fff; color:#1e293b;}
@@ -723,6 +751,7 @@ body{background:linear-gradient(180deg,#f4f7fb 0%, #eef6ff 40%, #f4f7fb 100%) !i
   .bottom-nav button{font-size:.58rem;}
   .bottom-nav button .ic{font-size:1rem;}
   .prog-lab{grid-template-columns:1fr !important;}
+  main{padding:14px 8px calc(80px + env(safe-area-inset-bottom, 0px)); max-width:100%; overflow-x:hidden;}
 }
 
 /* ===== Projects tab (advanced) ===== */
@@ -2427,14 +2456,12 @@ int main() {
     <div class="prog-lab">
       <aside class="prog-sidebar">
         <h2>All Programs</h2>
+        <p class="prog-sidebar-count" id="progSidebarCount">14 programs</p>
         <p class="prog-sidebar-hint">#1–2: direct sample output only. #3–14: Trace Load → Next Step.</p>
-<<<<<<< HEAD
         <div class="prog-mobile-pick">
           <label for="progSelectMobile">Choose program</label>
           <select id="progSelectMobile" aria-label="Choose program"></select>
         </div>
-=======
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
         <div id="progList" class="prog-list"></div>
       </aside>
 
@@ -2914,6 +2941,7 @@ function showTab(name){
   document.querySelectorAll('#tabs button, .bottom-nav button').forEach(b=>{
     b.classList.toggle('active', b.dataset.tab===name);
   });
+  if (name === 'programs' && typeof refreshProgList === 'function') refreshProgList();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 window.studioShowTab=showTab;
@@ -3672,6 +3700,20 @@ function highlightC(code){
   }).join('');
 }
 
+function scrollHotLineIntoView(editorEl, lineEl){
+  if (!editorEl || !lineEl) return;
+  const pad = 16;
+  const lineTop = lineEl.offsetTop;
+  const lineH = lineEl.offsetHeight || 20;
+  const viewH = editorEl.clientHeight;
+  const maxScroll = Math.max(0, editorEl.scrollHeight - viewH);
+  if (maxScroll <= 0) return;
+  let target = lineTop - Math.max(pad, (viewH - lineH) / 2);
+  target = Math.max(0, Math.min(target, maxScroll));
+  try { editorEl.scrollTo({ top: target, behavior: 'smooth' }); }
+  catch(e){ editorEl.scrollTop = target; }
+}
+
 function setHighlightedCode(el, code, hotLine){
   if (!el) return;
   el.innerHTML = highlightC(code);
@@ -3680,7 +3722,7 @@ function setHighlightedCode(el, code, hotLine){
     const line = el.querySelector('.line[data-ln="'+hotLine+'"]');
     if (line){
       line.classList.add('hot');
-      try { line.scrollIntoView({block:'center', behavior:'smooth'}); } catch(e){ line.scrollIntoView(true); }
+      requestAnimationFrame(()=> scrollHotLineIntoView(el, line));
     }
   }
 }
@@ -4637,11 +4679,8 @@ function selectProg(id){
   document.querySelectorAll('#progList [data-prog]').forEach(b=>{
     b.classList.toggle('active', b.dataset.prog===id);
   });
-<<<<<<< HEAD
   const mob=document.getElementById('progSelectMobile');
   if (mob && mob.value !== id) mob.value = id;
-=======
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
   const p=PROG_META[id];
   const code = C[id] || '// code missing';
   document.getElementById('progTitle').textContent = p.title;
@@ -4723,7 +4762,19 @@ function progShow(){
     tb.appendChild(tr);
   }
   const wrap=document.querySelector('.prog-trace-wrap');
-  if (wrap) wrap.scrollTop=wrap.scrollHeight;
+  if (wrap){
+    const cur=wrap.querySelector('tr.current');
+    if (cur){
+      const rowTop=cur.offsetTop;
+      const rowH=cur.offsetHeight||24;
+      const viewH=wrap.clientHeight;
+      const maxScroll=Math.max(0, wrap.scrollHeight-viewH);
+      let target=rowTop-Math.max(8,(viewH-rowH)/2);
+      wrap.scrollTop=Math.max(0, Math.min(target, maxScroll));
+    } else {
+      wrap.scrollTop=wrap.scrollHeight;
+    }
+  }
   updateProgNavButtons();
 }
 function progStep(d){
@@ -4736,10 +4787,8 @@ function progAuto(){ /* disabled: use Next Step only */ }
 
 function refreshProgList(){
   const list=document.getElementById('progList');
-<<<<<<< HEAD
   const sel=document.getElementById('progSelectMobile');
-=======
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
+  const countEl=document.getElementById('progSidebarCount');
   if (!list) return;
   const order=['stackarray','stacklinked','revno','revstr','palindrome','equalab','balpara','armstrong','copystack','sortstack','infixtopostfix','infixtoprefix','postfixeval','prefixeval'];
   list.innerHTML = order.map((id,i)=>{
@@ -4748,7 +4797,7 @@ function refreshProgList(){
     return '<button type="button" data-prog="'+id+'">'+short+'</button>';
   }).join('');
   list.querySelectorAll('[data-prog]').forEach(b=> b.addEventListener('click', ()=> selectProg(b.dataset.prog)));
-<<<<<<< HEAD
+  if (countEl) countEl.textContent = order.length + ' programs — tap or use dropdown';
   if (sel){
     sel.innerHTML = order.map((id,i)=>{
       const t=(PROG_META[id]&&PROG_META[id].title)||id;
@@ -4758,8 +4807,6 @@ function refreshProgList(){
     sel.onchange = ()=> selectProg(sel.value);
     if (progId) sel.value = progId;
   }
-=======
->>>>>>> 0d2836d (Sync program fixes: infix ^ precedence, Equal A/B trace, FULL_C_CODES)
 }
 
 function initProgramsTab(){
